@@ -22,10 +22,10 @@ int paused = 0; //Default not paused.
 int stat; //Status of child process.
 
 //Ctrl-c Signal Handler:
-//Kills the child process and exits the main process.
+//   Kills the child process and exits the main process.
 void handle_sigint1(int sig_int) {
 	printf("\nTerminating program Ctrl-c caught.\n");
-	kill(child_pid, SIGKILL);
+	kill(child_pid, sig_int);
 
 	if(WIFEXITED(stat)) {
 		printf("Exit Status of child: %d\n", WEXITSTATUS(stat));
@@ -35,9 +35,9 @@ void handle_sigint1(int sig_int) {
 }
 
 //Ctrl-z Signal Handler:
-//Toggles the child yes to stop the child process if it is
-//running, or resume the child process if it is stopped. Keeps
-//the main program running.
+//   Toggles the child yes to stop the child process if it is
+//   running, or resume the child process if it is stopped. Keeps
+//   the main program running.
 void handle_sigint2(int sig_tstp) {
 	printf("\nCtrl-z caught.\n");
 
@@ -67,7 +67,7 @@ int main (int argc, char **argv) {
 		printf("fork() failed.\n");
 		exit(0);
 	} else {
-		//Parent process code, fork successful
+		//Parent process code, fork successful.
 		signal(SIGINT, handle_sigint1);
 	    signal(SIGTSTP, handle_sigint2);
 		wait(&stat);
